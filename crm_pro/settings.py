@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'corsheaders',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 MIDDLEWARE = [
@@ -123,8 +125,39 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-REST_FRAMEWORK={
-    'DEFAULT_PERMISSION_CLASSES':[
-        'rest_framework.permissions.AllowAny',
+#FIXED REST_FRAMEWORK setting
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # moved here
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # sensible default
     ]
+}
+
+#Keep only ONE AUTHENTICATION_BACKENDS (remove the first duplicate)
+#FIXED REST_FRAMEWORK setting
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # moved here
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # sensible default
+    ]
+}
+
+#Keep only ONE AUTHENTICATION_BACKENDS (remove the first duplicate)
+AUTHENTICATION_BACKENDS = [
+    'api.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+
+
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'BLACKLIST_AFTER_ROTATION': True,
 }
