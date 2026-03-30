@@ -82,13 +82,13 @@ def protected_view(request):
         "user": request.user.username
     })
 
-from rest_framework.permissions import IsAdminUser
+from .permissions import IsAdminUser
 from .serializers import UserSerializer
 from django.contrib.auth.models import User
 
 
 @api_view(['PUT'])
-@permission_classes([IsAdminUser])   # Only admin can access
+@permission_classes([IsAuthenticated, IsAdminUser])   # Only admin can access
 def update_user_role(request, user_id):
     user = get_object_or_404(User, id=user_id)
     
@@ -102,3 +102,23 @@ def update_user_role(request, user_id):
         })
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+from .permissions import IsManagerUser
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, IsManagerUser])
+def manager_dashboard(request):
+    return Response({
+        "message": "Manager access granted"
+    })
+
+from .models import Role
+from rest_framework.permissions import IsAuthenticated
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def list_roles(request):
+    roles = Role.objects.all()
+    data = [{"id": r.id, "name": r.name} for r in roles]
+
+    return Response({"roles": data})

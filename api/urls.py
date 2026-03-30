@@ -25,4 +25,6 @@ urlpatterns = [
     path('logout/', logout_user),
     path('protected/', protected_view),
     path('update-user/<int:user_id>/', update_user_role),
+    path('roles/',list_roles),
+    path('manager-dashboard/', manager_dashboard),
 ]
