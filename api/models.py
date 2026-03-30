@@ -15,11 +15,11 @@ class CustomUser(models.Model):
 class Role(models.Model):
     ROLE_CHOICES = [
         ('superadmin', 'Superadmin'),
-        ('general manager', 'General manager'),
-        ('operations manager', 'Operations manager'),
-        ('department head','Department head'),
+        ('general_manager', 'General manager'),
+        ('operations_manager', 'Operations manager'),
+        ('department_head','Department head'),
         ('underwriter','Underwriter'),
-        ('sales manager','Sales manager'),
+        ('sales_manager','Sales manager'),
         ('telecallers','Telecallers'),
         ('customers','Customers'),
         ('accounts','Accounts')
