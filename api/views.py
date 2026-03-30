@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404
-from rest_framework import status
+from rest_framework import status, generics, permissions
 from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import RegisterSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
+
+from .serializers import *
 
 # Create your views here.
 from rest_framework.response import Response
@@ -82,3 +84,28 @@ def protected_view(request):
         "user": request.user.username
     })
 
+
+
+
+#profile Update View
+
+class ProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    # 🔹 Get current user's profile
+    def get_object(self):
+        profile, created = Profile.objects.get_or_create(user=self.request.user)
+        return profile
+
+    # 🔹 Handle update (PUT/PATCH)
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)  # PATCH support
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(serializer.data)

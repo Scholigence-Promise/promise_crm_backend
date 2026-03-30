@@ -24,4 +24,5 @@ urlpatterns = [
     path('login/', login_user),
     path('logout/', logout_user),
     path('protected/', protected_view),
+    path('profile/', ProfileView.as_view()),
 ]
