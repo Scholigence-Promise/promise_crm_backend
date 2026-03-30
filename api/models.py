@@ -21,7 +21,8 @@ class Role(models.Model):
         ('underwriter','Underwriter'),
         ('sales manager','Sales manager'),
         ('telecallers','Telecallers'),
-        ('customers','Customers')
+        ('customers','Customers'),
+        ('accounts','Accounts')
     ]
 
     name = models.CharField(max_length=20, choices=ROLE_CHOICES, unique=True)
