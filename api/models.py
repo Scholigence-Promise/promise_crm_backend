@@ -1,18 +1,5 @@
-from django.db import models
-
-# Create your models here.
-from django.contrib.auth.models import User
-from django.db import models
-
-class CustomUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.user.email
-from django.db import models
-from django.contrib.auth.models import User
-
 #creation of model for Roles:
+from django.db import models
 class Role(models.Model):
     ROLE_CHOICES = [
         ('superadmin', 'Superadmin'),
@@ -30,10 +17,3 @@ class Role(models.Model):
     def __str__(self):
         return self.get_name_display()
 
-
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True, blank=True)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.role}"
