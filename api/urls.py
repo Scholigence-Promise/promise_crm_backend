@@ -24,4 +24,5 @@ urlpatterns = [
     path('login/', login_user),
     path('logout/', logout_user),
     path('protected/', protected_view),
+    path('update-user/<int:user_id>/', update_user_role),
 ]
