@@ -82,3 +82,23 @@ def protected_view(request):
         "user": request.user.username
     })
 
+from rest_framework.permissions import IsAdminUser
+from .serializers import UserSerializer
+from django.contrib.auth.models import User
+
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])   # Only admin can access
+def update_user_role(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    
+    serializer = UserSerializer(user, data=request.data, partial=True, context={'request': request})
+    
+    if serializer.is_valid():
+        serializer.save()
+        return Response({
+            "message": "User updated successfully",
+            "data": serializer.data
+        })
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
