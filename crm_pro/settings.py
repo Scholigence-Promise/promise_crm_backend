@@ -135,6 +135,11 @@ REST_FRAMEWORK = {
     ]
 }
 
+import os
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 #Keep only ONE AUTHENTICATION_BACKENDS (remove the first duplicate)
 #FIXED REST_FRAMEWORK setting
 REST_FRAMEWORK = {
