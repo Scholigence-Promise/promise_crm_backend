@@ -102,3 +102,4 @@ def update_user_role(request, user_id):
         })
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
